@@ -15,6 +15,7 @@ function Xpagination() {
         setEmployeeData(res)
       } catch (error) {
         console.error('Error fetching employee data:', error);
+        alert("Error fetching employee data")
       }
     }
     fetchData();
