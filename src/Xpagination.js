@@ -15,7 +15,7 @@ function Xpagination() {
         setEmployeeData(res)
       } catch (error) {
         console.error('Error fetching employee data:', error);
-        alert("Error fetching employee data")
+        alert('Error fetching employee data')
       }
     }
     fetchData();
@@ -64,11 +64,11 @@ function Xpagination() {
           </tbody>
         </table>
             <div className='pagination'>
-              <button onClick={handlePrevPage} disabled={currentPage===1}>
+              <button onClick={handlePrevPage} >
                 Previous
               </button>
               <span>{currentPage}</span>
-              <button onClick={handleNextPage} disabled={currentPage===totalPages}>
+              <button onClick={handleNextPage} >
                 Next
               </button>
             </div>
