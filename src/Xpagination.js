@@ -54,7 +54,7 @@ const Xpagination = () => {
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((employee) => (
+          {employeeData.map((employee) => (
             <tr key={employee.id}>
               <td>{employee.id}</td>
               <td>{employee.name}</td>
