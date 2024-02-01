@@ -1,50 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import './Xpagination.css'; // Import a CSS file for styling (create this file)
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Xpagination.css";
 
-const Xpagination = () => {
-  const apiUrl = 'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json';
-  const itemsPerPage = 10;
-  const [employeeData, setEmployeeData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      setEmployeeData(data);
-    } catch (error) {
-      console.error('Error fetching employee data:', error);
-      alert('Error fetching employee');
-    }
-  };
+export default function Xpagination() {
+  const [emp, setEmp] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const [pages, setPages] = useState(1);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
+        );
+        const data = res.data;
+        setEmp(data);
+        setPages(Math.ceil(data.length / 10));
+      } catch (err) {
+        console.error(err);
+        alert("failed to fetch data");
+      }
+    };
+
     fetchData();
   }, []);
 
-  const totalItems = employeeData.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (currPage < pages) {
+      setCurrPage(currPage + 1);
     }
   };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+  const handlePreviousPage = () => {
+    if (currPage > 1) {
+      setCurrPage(currPage - 1);
     }
   };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = employeeData.slice(indexOfFirstItem, indexOfLastItem);
+  const startIndex = (currPage - 1) * 10;
+  const endIndex = startIndex + 10;
+
+  const currEmp = emp.slice(startIndex, endIndex);
 
   return (
-    <div>
+    <div className="pagination">
       <h1>Employee Data Table</h1>
-      <table className="styled-table">
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -54,7 +55,7 @@ const Xpagination = () => {
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((employee) => (
+          {currEmp.map((employee) => (
             <tr key={employee.id}>
               <td>{employee.id}</td>
               <td>{employee.name}</td>
@@ -64,17 +65,17 @@ const Xpagination = () => {
           ))}
         </tbody>
       </table>
-      <div className="pagination">
-        <button onClick={handlePrevPage}>
+      <div className="pagin">
+        <button onClick={handlePreviousPage} disabled={currPage === 1}>
           Previous
         </button>
-        <span>{currentPage}</span>
-        <button onClick={handleNextPage}>
+        <span>
+          <div className="curr-page">{currPage}</div>
+        </span>
+        <button onClick={handleNextPage} disabled={currPage === pages}>
           Next
         </button>
       </div>
     </div>
   );
-};
-
-export default Xpagination;
+}
