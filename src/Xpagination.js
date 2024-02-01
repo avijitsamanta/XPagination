@@ -43,7 +43,7 @@ const Xpagination = () => {
 
   return (
     <div>
-      <h1>Employee List - Page {currentPage}</h1>
+      <h1>Employee Data Table</h1>
       <table className="styled-table">
         <thead>
           <tr>
