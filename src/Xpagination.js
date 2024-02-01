@@ -7,18 +7,18 @@ const Xpagination = () => {
   const [employeeData, setEmployeeData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        setEmployeeData(data);
-      } catch (error) {
-        console.error('Error fetching employee data:', error);
-        alert('Error fetching employee');
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      setEmployeeData(data);
+    } catch (error) {
+      console.error('Error fetching employee data:', error);
+      alert('Error fetching employee');
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
